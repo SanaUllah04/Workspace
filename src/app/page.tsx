@@ -35,7 +35,7 @@ export default function Home() {
 
               <div className="animate-fade-slide-up-3 mt-8 flex flex-col items-center gap-4 sm:flex-row">
                 <Link
-                  href="#"
+                  href="/login"
                   className="group inline-flex items-center gap-2 rounded-full bg-highlight px-7 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
                 >
                   Enter Workspace
