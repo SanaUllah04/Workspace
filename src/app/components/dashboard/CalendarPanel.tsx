@@ -5,10 +5,20 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
-const TOTAL_CELLS = 42; // 6 rows x 7 days
+const TOTAL_CELLS = 42;
 
 interface CalendarPanelProps {
   isOpen: boolean;
@@ -22,17 +32,14 @@ function buildGrid(year: number, month: number) {
 
   const cells: { day: number; isCurrentMonth: boolean }[] = [];
 
-  // Previous month overflow
   for (let i = startDay - 1; i >= 0; i--) {
     cells.push({ day: daysInPrevMonth - i, isCurrentMonth: false });
   }
 
-  // Current month
   for (let d = 1; d <= daysInMonth; d++) {
     cells.push({ day: d, isCurrentMonth: true });
   }
 
-  // Next month overflow — pad to exactly TOTAL_CELLS
   const remaining = TOTAL_CELLS - cells.length;
   for (let d = 1; d <= remaining; d++) {
     cells.push({ day: d, isCurrentMonth: false });
@@ -50,62 +57,63 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
 
   function prevMonth() {
     setMonth((m) => {
-      if (m === 0) { setYear((y) => y - 1); return 11; }
+      if (m === 0) {
+        setYear((y) => y - 1);
+        return 11;
+      }
       return m - 1;
     });
   }
 
   function nextMonth() {
     setMonth((m) => {
-      if (m === 11) { setYear((y) => y + 1); return 0; }
+      if (m === 11) {
+        setYear((y) => y + 1);
+        return 0;
+      }
       return m + 1;
     });
   }
 
   const isToday = (d: number, current: boolean) =>
-    current && d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+    current &&
+    d === today.getDate() &&
+    month === today.getMonth() &&
+    year === today.getFullYear();
 
   return (
     <div
       aria-hidden={!isOpen}
-      className={`absolute top-0 right-0 z-20 h-full w-72 transition-transform duration-300 ease-out ${
-        isOpen ? "translate-x-0" : "translate-x-full"
+      className={`absolute top-16 right-6 z-20 transition-all duration-300 ease-out lg:top-20 lg:right-10 ${
+        isOpen
+          ? "translate-x-0 opacity-100"
+          : "translate-x-full opacity-0 pointer-events-none"
       }`}
     >
-      <div className="flex h-full flex-col rounded-l-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 overflow-y-auto">
-        {/* Close button + month/year + nav — fixed height header */}
-        <div className="shrink-0">
-          <div className="mb-1 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              aria-label="Close calendar"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-          </div>
+      <div className="w-[360px] rounded-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5">
+        {/* Calendar title — own row */}
 
-          <p className="font-fraunces text-lg font-medium text-ink mb-3">
+        {/* Month/year + nav — own row */}
+        <div className="mb-4 flex items-center justify-between">
+          <p className="font-fraunces text-lg font-medium text-ink">
             {MONTHS[month]} {year}
           </p>
-
-          <div className="mb-3 flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={prevMonth}
-              className="flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-200 hover:bg-accent/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex items-center justify-center rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-label="Previous month"
             >
-              <ChevronLeft size={14} />
-              Prev
+              <ChevronLeft size={16} />
             </button>
             <button
               type="button"
               onClick={nextMonth}
-              className="flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-200 hover:bg-accent/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex items-center justify-center rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-label="Next month"
             >
-              Next
-              <ChevronRight size={14} />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>
@@ -113,7 +121,10 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
         {/* Fixed-height grid (6 rows = 42 cells) */}
         <div className="grid grid-cols-7 gap-y-1 text-center text-xs min-h-[228px]">
           {WEEKDAYS.map((d) => (
-            <div key={d} className="py-1 text-[10px] font-semibold uppercase tracking-wider text-muted">
+            <div
+              key={d}
+              className="py-1 text-[10px] font-semibold uppercase tracking-wider text-muted"
+            >
               {d}
             </div>
           ))}
@@ -126,8 +137,8 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
                 isToday(cell.day, cell.isCurrentMonth)
                   ? "bg-highlight font-semibold text-white"
                   : cell.isCurrentMonth
-                  ? "text-ink hover:bg-black/5"
-                  : "text-muted/40"
+                    ? "text-ink hover:bg-black/5"
+                    : "text-muted/40"
               }`}
             >
               {cell.day}
@@ -136,14 +147,16 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
         </div>
 
         {/* Google Calendar stub */}
-        <div className="mt-auto pt-4 border-t border-black/5 shrink-0">
+        <div className="mt-4 pt-4 border-t border-black/5">
           <button
             type="button"
             className="w-full rounded-full border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-all duration-200 hover:bg-accent/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             Connect Google Calendar
           </button>
-          <p className="mt-1.5 text-center text-[10px] text-muted">Coming soon</p>
+          <p className="mt-1.5 text-center text-[10px] text-muted">
+            Coming soon
+          </p>
         </div>
       </div>
     </div>
