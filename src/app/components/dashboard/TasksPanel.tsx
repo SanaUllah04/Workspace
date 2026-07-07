@@ -51,24 +51,14 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
         isOpen ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 max-h-[60vh] overflow-y-auto">
-        {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-fraunces text-base font-medium text-ink">
-            Tasks &amp; Reminders
-          </h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            aria-label="Close tasks"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
+      <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 max-h-[70vh]">
+        {/* Header — no close button inside, only toggle outside */}
+        <h3 className="font-fraunces text-base font-medium text-ink mb-4">
+          Tasks &amp; Reminders
+        </h3>
 
         {/* Add task */}
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-3 flex items-center gap-2 shrink-0">
           <input
             type="text"
             value={input}
@@ -87,8 +77,10 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
           </button>
         </div>
 
-        {/* Task list */}
-        <ul className="space-y-1">
+        {/* Progress bar — always visible, pinned above scroll */}
+
+        {/* Scrollable task list */}
+        <ul className="space-y-1 overflow-y-auto min-h-0 flex-1">
           {tasks.map((task) => (
             <li
               key={task.id}
@@ -125,8 +117,8 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
           ))}
         </ul>
 
-        {/* Progress */}
-        <div className="mt-4 flex items-center gap-2 border-t border-black/5 pt-3">
+        {/* Progress — always visible at bottom */}
+        <div className="mt-3 flex items-center gap-2 border-t border-black/5 pt-3 shrink-0">
           <div className="h-1.5 flex-1 rounded-full bg-black/5 overflow-hidden">
             <div
               className="h-full rounded-full bg-accent transition-all duration-300"
@@ -135,7 +127,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
               }}
             />
           </div>
-          <span className="text-[11px] font-medium text-muted">
+          <span className="text-[11px] font-medium text-muted shrink-0">
             {doneCount}/{tasks.length}
           </span>
         </div>

@@ -18,19 +18,10 @@ export default function NotepadPanel({ isOpen, onClose }: NotepadPanelProps) {
       }`}
     >
       <div className="mx-auto mt-24 w-full max-w-2xl rounded-b-[28px] bg-surface p-6 shadow-lg ring-1 ring-black/5">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="font-fraunces text-base font-medium text-ink">
-            Scratchpad
-          </h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            aria-label="Close notepad"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
+        {/* No close button inside — only toggle outside */}
+        <h3 className="font-fraunces text-base font-medium text-ink mb-4">
+          Scratchpad
+        </h3>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
