@@ -36,7 +36,7 @@ export default function Home() {
               <div className="animate-fade-slide-up-3 mt-8 flex flex-col items-center gap-4 sm:flex-row">
                 <Link
                   href="/login"
-                  className="group inline-flex items-center gap-2 rounded-full bg-highlight px-7 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
+                  className="btn-base group inline-flex items-center gap-2 rounded-full bg-highlight px-7 py-3 text-sm font-semibold text-white hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
                 >
                   Enter Workspace
                   <ArrowRight
@@ -46,7 +46,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="#"
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 px-7 py-3 text-sm font-semibold text-ink transition-all duration-200 hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  className="btn-base inline-flex items-center gap-2 rounded-full border border-black/10 px-7 py-3 text-sm font-semibold text-ink hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                   See how it works
                 </Link>
