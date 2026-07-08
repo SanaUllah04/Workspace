@@ -51,7 +51,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
         isOpen ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 max-h-[70vh]">
+        <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 max-h-[85vh] min-h-0">
         {/* Header — no close button inside, only toggle outside */}
         <h3 className="font-fraunces text-base font-medium text-ink mb-4">
           Tasks &amp; Reminders
@@ -70,7 +70,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
           <button
             type="button"
             onClick={addTask}
-            className="flex shrink-0 items-center justify-center rounded-full bg-accent p-2 text-white transition-all duration-200 hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn-base flex shrink-0 items-center justify-center rounded-full bg-accent p-2 text-white hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Add task"
           >
             <Plus size={16} />

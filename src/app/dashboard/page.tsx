@@ -36,10 +36,10 @@ function ToggleBtn({
       aria-expanded={active}
       aria-label={label}
       onClick={onClick}
-      className={`flex items-center justify-center rounded-full p-2.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+      className={`btn-base flex items-center justify-center rounded-full p-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
         active
-          ? "bg-accent text-white shadow-md active:scale-95 hover:bg-accent-hover"
-          : "bg-surface text-muted shadow-sm ring-1 ring-black/5 active:scale-95 hover:bg-white hover:text-accent hover:shadow-md"
+          ? "bg-accent text-white shadow-md hover:bg-accent-hover"
+          : "bg-surface text-muted shadow-sm ring-1 ring-black/5 hover:bg-white hover:text-accent hover:shadow-md"
       }`}
     >
       <IconComponent size={18} />

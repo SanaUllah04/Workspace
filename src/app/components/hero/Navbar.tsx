@@ -40,7 +40,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="#"
-            className="rounded-full bg-highlight px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
+            className="btn-base rounded-full bg-highlight px-5 py-2 text-sm font-semibold text-white hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
           >
             Get Started
           </Link>

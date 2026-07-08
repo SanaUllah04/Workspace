@@ -142,7 +142,7 @@ function DraggableBook({
       <button
         type="button"
         onClick={onClick}
-        className="relative flex flex-col items-center h-full w-full transition-all duration-200 hover:-translate-y-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-t-sm"
+        className="btn-base relative flex flex-col items-center h-full w-full hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-t-sm"
         aria-label={`Open ${book.title}`}
       >
         {/* Bookmark ribbon */}
@@ -404,7 +404,7 @@ export default function BookshelfPanel({
             <button
               type="button"
               onClick={closeBook}
-              className="flex items-center gap-1.5 text-xs font-semibold text-muted transition-all duration-200 hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+              className="btn-base flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
             >
               <ArrowLeft size={15} />
               Back to shelf
@@ -417,7 +417,7 @@ export default function BookshelfPanel({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn-base rounded-full p-1.5 text-muted hover:text-ink hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Close bookshelf"
           >
             <X size={16} />
@@ -504,7 +504,7 @@ export default function BookshelfPanel({
                           <button
                             type="button"
                             onClick={addBook}
-                            className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white transition-all hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="btn-base rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                           >
                             Add
                           </button>
@@ -514,7 +514,7 @@ export default function BookshelfPanel({
                               setShowNewInput(false);
                               setNewBookInput("");
                             }}
-                            className="rounded-full px-3 py-1 text-xs text-muted transition-all hover:text-ink active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="btn-base rounded-full px-3 py-1 text-xs text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                           >
                             Cancel
                           </button>
@@ -524,7 +524,7 @@ export default function BookshelfPanel({
                       <button
                         type="button"
                         onClick={() => setShowNewInput(true)}
-                        className="flex h-full w-full items-center justify-center rounded-t-md border-2 border-dashed border-black/10 bg-white/50 transition-all duration-200 hover:border-accent/40 hover:bg-accent/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        className="btn-base flex h-full w-full items-center justify-center rounded-t-md border-2 border-dashed border-black/10 bg-white/50 hover:border-accent/40 hover:bg-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         aria-label="Add new book"
                       >
                         <Plus size={18} className="text-muted" />
@@ -633,7 +633,7 @@ export default function BookshelfPanel({
                 type="button"
                 onClick={() => turnPage("prev")}
                 disabled={displayPage === 0 || pageAnim !== "none"}
-                className="flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-200 hover:bg-accent/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
+                className="btn-base flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Previous spread"
               >
                 <ChevronLeft size={14} />
@@ -652,7 +652,7 @@ export default function BookshelfPanel({
                   displayPage >= activeBook.pages.length - 2 ||
                   pageAnim !== "none"
                 }
-                className="flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent transition-all duration-200 hover:bg-accent/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
+                className="btn-base flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Next spread"
               >
                 Next

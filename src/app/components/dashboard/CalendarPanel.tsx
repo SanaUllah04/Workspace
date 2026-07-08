@@ -102,7 +102,7 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
             <button
               type="button"
               onClick={prevMonth}
-              className="flex items-center justify-center rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="btn-base flex items-center justify-center rounded-full p-1.5 text-muted hover:text-ink hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               aria-label="Previous month"
             >
               <ChevronLeft size={16} />
@@ -110,7 +110,7 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
             <button
               type="button"
               onClick={nextMonth}
-              className="flex items-center justify-center rounded-full p-1.5 text-muted transition-all duration-200 hover:text-ink hover:bg-black/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="btn-base flex items-center justify-center rounded-full p-1.5 text-muted hover:text-ink hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               aria-label="Next month"
             >
               <ChevronRight size={16} />
@@ -133,7 +133,7 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
               key={i}
               type="button"
               disabled={!cell.isCurrentMonth}
-              className={`rounded-lg py-1.5 text-sm transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+              className={`btn-base rounded-lg py-1.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 isToday(cell.day, cell.isCurrentMonth)
                   ? "bg-highlight font-semibold text-white"
                   : cell.isCurrentMonth
@@ -150,7 +150,7 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
         <div className="mt-4 pt-4 border-t border-black/5">
           <button
             type="button"
-            className="w-full rounded-full border border-accent/30 px-4 py-2 text-xs font-semibold text-accent transition-all duration-200 hover:bg-accent/5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="btn-base w-full rounded-full border border-accent/30 px-4 py-2 text-xs font-semibold text-accent hover:bg-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             Connect Google Calendar
           </button>
