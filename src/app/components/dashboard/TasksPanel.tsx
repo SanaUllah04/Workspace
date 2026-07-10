@@ -34,7 +34,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
 
   function toggleTask(id: string) {
     setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
     );
   }
 
@@ -51,7 +51,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
         isOpen ? "translate-y-0" : "translate-y-full"
       }`}
     >
-        <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5 max-h-[85vh] min-h-0">
+      <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 pb-20 shadow-lg ring-1 ring-black/5 max-h-[85vh] min-h-0">
         {/* Header — no close button inside, only toggle outside */}
         <h3 className="font-fraunces text-base font-medium text-ink mb-4">
           Tasks &amp; Reminders
@@ -123,7 +123,10 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
             <div
               className="h-full rounded-full bg-accent transition-all duration-300"
               style={{
-                width: tasks.length > 0 ? `${(doneCount / tasks.length) * 100}%` : "0%",
+                width:
+                  tasks.length > 0
+                    ? `${(doneCount / tasks.length) * 100}%`
+                    : "0%",
               }}
             />
           </div>
