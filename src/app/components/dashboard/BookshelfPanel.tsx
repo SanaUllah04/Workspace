@@ -432,7 +432,7 @@ export default function BookshelfPanel({
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
-            <div className="px-5 py-5 max-h-[55vh] overflow-y-auto">
+            <div className="px-5 py-5 pb-16 max-h-[65vh] overflow-y-auto">
               {/* Desk area */}
               {deskBooks.length > 0 && (
                 <div className="mb-5">
@@ -540,7 +540,7 @@ export default function BookshelfPanel({
 
         {/* Reading view — two-page spread */}
         {view === "reading" && activeBook && (
-          <div className="px-5 py-5 max-h-[60vh] overflow-y-auto">
+          <div className="px-5 py-5 pb-16 max-h-[70vh] overflow-y-auto">
             <div
               key={displayPage}
               onAnimationEnd={handleAnimEnd}
