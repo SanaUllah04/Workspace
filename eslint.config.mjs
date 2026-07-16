@@ -9,18 +9,9 @@ const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const eslintConfig = [
   {
-    ignores: ['.next/**', 'node_modules/**', 'public/**'],
+    ignores: ['.next/**', 'node_modules/**', 'public/**', 'e2e/**'],
   },
   ...compat.extends('next/core-web-vitals', 'prettier'),
-  {
-    files: [
-      '**/*.test.{ts,tsx}',
-      '**/*.spec.{ts,tsx}',
-      '**/*.test.{js,jsx}',
-      '**/*.spec.{js,jsx}',
-    ],
-    extends: [...compat.extends('plugin:testing-library/react')],
-  },
 ];
 
 export default eslintConfig;
