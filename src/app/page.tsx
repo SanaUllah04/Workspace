@@ -1,18 +1,20 @@
-import Link from "next/link";
-import { ArrowRight, Shield, Globe, Sparkles } from "lucide-react";
-import Navbar from "@/app/components/hero/Navbar";
-import ClockWidgetCard from "@/app/components/hero/ClockWidgetCard";
-import NotepadWidgetCard from "@/app/components/hero/NotepadWidgetCard";
-import TasksWidgetCard from "@/app/components/hero/TasksWidgetCard";
-import CalendarWidgetCard from "@/app/components/hero/CalendarWidgetCard";
+import Link from 'next/link';
+import { ArrowRight, Shield, Globe, Sparkles } from 'lucide-react';
+import Navbar from '@/app/components/hero/Navbar';
+import ClockWidgetCard from '@/app/components/hero/ClockWidgetCard';
+import NotepadWidgetCard from '@/app/components/hero/NotepadWidgetCard';
+import TasksWidgetCard from '@/app/components/hero/TasksWidgetCard';
+import CalendarWidgetCard from '@/app/components/hero/CalendarWidgetCard';
 
 export default function Home() {
   return (
     <div className="min-h-screen p-4 md:p-6">
       <div className="mx-auto max-w-[1440px]">
-        <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-[32px] bg-white shadow-sm ring-1 ring-black/5 md:min-h-[calc(100vh-3rem)] md:rounded-[40px]"
+        <div
+          className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-[32px] bg-white shadow-sm ring-1 ring-black/5 md:min-h-[calc(100vh-3rem)] md:rounded-[40px]"
           style={{
-            background: "radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff",
+            background:
+              'radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff',
           }}
         >
           <Navbar />
@@ -53,7 +55,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative mt-16 hidden w-full max-w-2xl md:block" style={{ height: 260 }}>
+            <div
+              className="relative mt-16 hidden w-full max-w-2xl md:block"
+              style={{ height: 260 }}
+            >
               <div className="animate-fade-slide-up-4 animate-float absolute -top-4 left-[2%] rotate-[-3deg] lg:left-[8%]">
                 <ClockWidgetCard />
               </div>

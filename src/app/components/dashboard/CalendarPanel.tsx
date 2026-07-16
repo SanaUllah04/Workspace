@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useMemo } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 const TOTAL_CELLS = 42;
 
@@ -86,8 +86,8 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
       aria-hidden={!isOpen}
       className={`absolute top-16 right-6 z-20 transition-all duration-300 ease-out lg:top-20 lg:right-10 ${
         isOpen
-          ? "translate-x-0 opacity-100"
-          : "translate-x-full opacity-0 pointer-events-none"
+          ? 'translate-x-0 opacity-100'
+          : 'translate-x-full opacity-0 pointer-events-none'
       }`}
     >
       <div className="w-[360px] rounded-[28px] bg-surface p-5 shadow-lg ring-1 ring-black/5">
@@ -135,10 +135,10 @@ export default function CalendarPanel({ isOpen, onClose }: CalendarPanelProps) {
               disabled={!cell.isCurrentMonth}
               className={`btn-base rounded-lg py-1.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 isToday(cell.day, cell.isCurrentMonth)
-                  ? "bg-highlight font-semibold text-white"
+                  ? 'bg-highlight font-semibold text-white'
                   : cell.isCurrentMonth
-                    ? "text-ink hover:bg-black/5"
-                    : "text-muted/40"
+                    ? 'text-ink hover:bg-black/5'
+                    : 'text-muted/40'
               }`}
             >
               {cell.day}

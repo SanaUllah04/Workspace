@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { CheckSquare, Square, Trash2, Plus } from "lucide-react";
+import { useState } from 'react';
+import { CheckSquare, Square, Trash2, Plus } from 'lucide-react';
 
 interface Task {
   id: string;
@@ -16,11 +16,11 @@ interface TasksPanelProps {
 
 export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
   const [tasks, setTasks] = useState<Task[]>([
-    { id: "1", label: "Review PR #142", done: true },
-    { id: "2", label: "Write release notes", done: true },
-    { id: "3", label: "Prep for standup", done: false },
+    { id: '1', label: 'Review PR #142', done: true },
+    { id: '2', label: 'Write release notes', done: true },
+    { id: '3', label: 'Prep for standup', done: false },
   ]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   function addTask() {
     const trimmed = input.trim();
@@ -29,12 +29,12 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
       ...prev,
       { id: crypto.randomUUID(), label: trimmed, done: false },
     ]);
-    setInput("");
+    setInput('');
   }
 
   function toggleTask(id: string) {
     setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
     );
   }
 
@@ -48,7 +48,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
     <div
       aria-hidden={!isOpen}
       className={`absolute bottom-0 right-0 z-20 w-72 transition-transform duration-300 ease-out ${
-        isOpen ? "translate-y-0" : "translate-y-full"
+        isOpen ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
       <div className="flex flex-col rounded-tl-[28px] bg-surface p-5 pb-20 shadow-lg ring-1 ring-black/5 max-h-[85vh] min-h-0">
@@ -63,7 +63,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addTask()}
+            onKeyDown={(e) => e.key === 'Enter' && addTask()}
             placeholder="Add a task..."
             className="min-w-0 flex-1 rounded-xl border border-black/10 bg-transparent px-3.5 py-2 text-sm text-ink outline-none transition-all duration-200 placeholder:text-muted/50 focus:border-accent focus:ring-2 focus:ring-accent/20"
           />
@@ -90,7 +90,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
                 type="button"
                 onClick={() => toggleTask(task.id)}
                 className="shrink-0 transition-all duration-200 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
-                aria-label={task.done ? "Mark as undone" : "Mark as done"}
+                aria-label={task.done ? 'Mark as undone' : 'Mark as done'}
               >
                 {task.done ? (
                   <CheckSquare size={16} className="text-accent" />
@@ -100,7 +100,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
               </button>
               <span
                 className={`flex-1 text-sm leading-snug ${
-                  task.done ? "text-muted line-through" : "text-ink"
+                  task.done ? 'text-muted line-through' : 'text-ink'
                 }`}
               >
                 {task.label}
@@ -126,7 +126,7 @@ export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
                 width:
                   tasks.length > 0
                     ? `${(doneCount / tasks.length) * 100}%`
-                    : "0%",
+                    : '0%',
               }}
             />
           </div>
