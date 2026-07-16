@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Clock, Sun } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { Clock, Sun } from 'lucide-react';
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
     hour12: false,
   });
 }
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
   });
 }
 
@@ -26,8 +26,8 @@ interface ClockWidgetCardProps {
 }
 
 export default function ClockWidgetCard({
-  location = "Peshawar, PK",
-  temperature = "31°C",
+  location = 'Peshawar, PK',
+  temperature = '31°C',
 }: ClockWidgetCardProps) {
   const [time, setTime] = useState<Date | null>(null);
 
@@ -54,9 +54,7 @@ export default function ClockWidgetCard({
         </p>
       )}
 
-      {time && (
-        <p className="mt-0.5 text-xs text-muted">{formatDate(time)}</p>
-      )}
+      {time && <p className="mt-0.5 text-xs text-muted">{formatDate(time)}</p>}
 
       <div className="mt-3 flex items-center gap-2 border-t border-black/5 pt-3">
         <Sun size={16} className="text-highlight" />

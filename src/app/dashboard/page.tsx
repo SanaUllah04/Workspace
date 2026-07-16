@@ -1,20 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  CalendarDays,
-  CheckSquare,
-  PenLine,
-  BookOpen,
-  X,
-} from "lucide-react";
-import TimeLocationWeather from "@/app/components/dashboard/TimeLocationWeather";
-import CalendarPanel from "@/app/components/dashboard/CalendarPanel";
-import TasksPanel from "@/app/components/dashboard/TasksPanel";
-import NotepadPanel from "@/app/components/dashboard/NotepadPanel";
-import BookshelfPanel from "@/app/components/dashboard/BookshelfPanel";
+import { useState } from 'react';
+import { CalendarDays, CheckSquare, PenLine, BookOpen, X } from 'lucide-react';
+import TimeLocationWeather from '@/app/components/dashboard/TimeLocationWeather';
+import CalendarPanel from '@/app/components/dashboard/CalendarPanel';
+import TasksPanel from '@/app/components/dashboard/TasksPanel';
+import NotepadPanel from '@/app/components/dashboard/NotepadPanel';
+import BookshelfPanel from '@/app/components/dashboard/BookshelfPanel';
 
-type Panel = "calendar" | "tasks" | "notepad" | "bookshelf" | null;
+type Panel = 'calendar' | 'tasks' | 'notepad' | 'bookshelf' | null;
 
 function ToggleBtn({
   icon: Icon,
@@ -38,8 +32,8 @@ function ToggleBtn({
       onClick={onClick}
       className={`btn-base flex items-center justify-center rounded-full p-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
         active
-          ? "bg-accent text-white shadow-md hover:bg-accent-hover"
-          : "bg-surface text-muted shadow-sm ring-1 ring-black/5 hover:bg-white hover:text-accent hover:shadow-md"
+          ? 'bg-accent text-white shadow-md hover:bg-accent-hover'
+          : 'bg-surface text-muted shadow-sm ring-1 ring-black/5 hover:bg-white hover:text-accent hover:shadow-md'
       }`}
     >
       <IconComponent size={18} />
@@ -61,7 +55,7 @@ export default function DashboardPage() {
           className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-[32px] bg-white shadow-sm ring-1 ring-black/5 md:min-h-[calc(100vh-3rem)] md:rounded-[40px]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff",
+              'radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff',
           }}
         >
           {/* Time / Location / Weather — always visible top-right */}
@@ -77,8 +71,8 @@ export default function DashboardPage() {
                 icon={CalendarDays}
                 activeIcon={X}
                 label="Toggle calendar panel"
-                active={openPanel === "calendar"}
-                onClick={() => togglePanel("calendar")}
+                active={openPanel === 'calendar'}
+                onClick={() => togglePanel('calendar')}
               />
             </div>
           </div>
@@ -92,8 +86,8 @@ export default function DashboardPage() {
                 icon={CheckSquare}
                 activeIcon={X}
                 label="Toggle tasks panel"
-                active={openPanel === "tasks"}
-                onClick={() => togglePanel("tasks")}
+                active={openPanel === 'tasks'}
+                onClick={() => togglePanel('tasks')}
               />
             </div>
           </div>
@@ -104,8 +98,8 @@ export default function DashboardPage() {
                 icon={PenLine}
                 activeIcon={X}
                 label="Toggle notepad"
-                active={openPanel === "notepad"}
-                onClick={() => togglePanel("notepad")}
+                active={openPanel === 'notepad'}
+                onClick={() => togglePanel('notepad')}
               />
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
                 Notepad
@@ -119,8 +113,8 @@ export default function DashboardPage() {
                 icon={BookOpen}
                 activeIcon={X}
                 label="Toggle bookshelf"
-                active={openPanel === "bookshelf"}
-                onClick={() => togglePanel("bookshelf")}
+                active={openPanel === 'bookshelf'}
+                onClick={() => togglePanel('bookshelf')}
               />
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted">
                 Bookshelf
@@ -130,19 +124,19 @@ export default function DashboardPage() {
 
           {/* Sliding panels */}
           <CalendarPanel
-            isOpen={openPanel === "calendar"}
+            isOpen={openPanel === 'calendar'}
             onClose={() => setOpenPanel(null)}
           />
           <TasksPanel
-            isOpen={openPanel === "tasks"}
+            isOpen={openPanel === 'tasks'}
             onClose={() => setOpenPanel(null)}
           />
           <NotepadPanel
-            isOpen={openPanel === "notepad"}
+            isOpen={openPanel === 'notepad'}
             onClose={() => setOpenPanel(null)}
           />
           <BookshelfPanel
-            isOpen={openPanel === "bookshelf"}
+            isOpen={openPanel === 'bookshelf'}
             onClose={() => setOpenPanel(null)}
           />
         </div>

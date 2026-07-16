@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -10,23 +10,17 @@ import {
   useSensors,
   type DragEndEvent,
   type DragStartEvent,
-} from "@dnd-kit/core";
+} from '@dnd-kit/core';
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ArrowLeft,
-  Plus,
-  X,
-} from "lucide-react";
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { ChevronLeft, ChevronRight, ArrowLeft, Plus, X } from 'lucide-react';
 
-const STORAGE_KEY = "dayspace-bookshelf";
+const STORAGE_KEY = 'dayspace-bookshelf';
 
 interface Book {
   id: string;
@@ -40,24 +34,35 @@ interface Book {
 }
 
 const SPINE_COLORS = [
-  "#3d5a80", "#ee6c4d", "#1b2430", "#4a5568",
-  "#2f4666", "#e85d3d", "#5a7a9e", "#f08c70",
-  "#2c3a4a", "#3d5a80", "#ee6c4d", "#1b2430",
-  "#5a7a9e", "#e85d3d", "#4a5568",
+  '#3d5a80',
+  '#ee6c4d',
+  '#1b2430',
+  '#4a5568',
+  '#2f4666',
+  '#e85d3d',
+  '#5a7a9e',
+  '#f08c70',
+  '#2c3a4a',
+  '#3d5a80',
+  '#ee6c4d',
+  '#1b2430',
+  '#5a7a9e',
+  '#e85d3d',
+  '#4a5568',
 ];
 
-const RIBBON_COLORS = ["#ee6c4d", "#e85d3d", "#f08c70", "#3d5a80", "#5a7a9e"];
+const RIBBON_COLORS = ['#ee6c4d', '#e85d3d', '#f08c70', '#3d5a80', '#5a7a9e'];
 
 function createSampleBooks(): Book[] {
   return [
     {
-      id: "b1",
-      title: "The Art of Focus",
+      id: 'b1',
+      title: 'The Art of Focus',
       pages: [
-        "In a world of endless distractions, the ability to focus deeply has become a superpower.\n\nThis is the premise upon which our entire workspace is built. Not to do more, but to do what matters.\n\nThe quiet mind is not empty — it is fully engaged with the present task.",
-        "Deep work cannot be rushed. It requires rituals, boundaries, and a space that protects attention.\n\nYour digital environment should feel like a calm room with a single desk, not a crowded marketplace.\n\nEvery notification is a tax on your attention. Choose wisely what you allow through.",
+        'In a world of endless distractions, the ability to focus deeply has become a superpower.\n\nThis is the premise upon which our entire workspace is built. Not to do more, but to do what matters.\n\nThe quiet mind is not empty — it is fully engaged with the present task.',
+        'Deep work cannot be rushed. It requires rituals, boundaries, and a space that protects attention.\n\nYour digital environment should feel like a calm room with a single desk, not a crowded marketplace.\n\nEvery notification is a tax on your attention. Choose wisely what you allow through.',
         "The most productive people don't manage time — they manage attention.\n\nTime is fixed. Attention is variable. Protect it fiercely.\n\nBuild systems, not habits. Systems scale. Habits fade under pressure.",
-        "The ability to concentrate without distraction on a cognitively demanding task is a skill that requires training.\n\nLike any skill, it must be practiced deliberately and consistently to improve.",
+        'The ability to concentrate without distraction on a cognitively demanding task is a skill that requires training.\n\nLike any skill, it must be practiced deliberately and consistently to improve.',
       ],
       currentPage: 0,
       color: SPINE_COLORS[0],
@@ -66,11 +71,11 @@ function createSampleBooks(): Book[] {
       onShelf: true,
     },
     {
-      id: "b2",
-      title: "Notes on Notes",
+      id: 'b2',
+      title: 'Notes on Notes',
       pages: [
-        "The simple act of writing something down changes how you think about it.\n\nNotes are not just memory aids. They are thinking tools. When you write, you externalize your thoughts and can examine them from a distance.",
-        "Good note-taking is not about capturing everything. It is about capturing what matters.\n\nAsk yourself: will I care about this tomorrow? Next week? Next year?\n\nIf the answer is no, let it go.",
+        'The simple act of writing something down changes how you think about it.\n\nNotes are not just memory aids. They are thinking tools. When you write, you externalize your thoughts and can examine them from a distance.',
+        'Good note-taking is not about capturing everything. It is about capturing what matters.\n\nAsk yourself: will I care about this tomorrow? Next week? Next year?\n\nIf the answer is no, let it go.',
       ],
       currentPage: 0,
       color: SPINE_COLORS[1],
@@ -79,8 +84,8 @@ function createSampleBooks(): Book[] {
       onShelf: true,
     },
     {
-      id: "b3",
-      title: "Calendar Zen",
+      id: 'b3',
+      title: 'Calendar Zen',
       pages: [
         "Your calendar should feel like a garden, not a grid.\n\nBlock time for the important stuff first. Let the urgent fill what's left.\n\nIf everything is urgent, nothing is.",
         "Time blocking is the single most effective productivity technique.\n\nAssign every hour a job. Protect those hours like appointments with yourself.\n\nBecause that's exactly what they are.",
@@ -95,7 +100,7 @@ function createSampleBooks(): Book[] {
 }
 
 function loadBooks(): Book[] {
-  if (typeof window === "undefined") return createSampleBooks();
+  if (typeof window === 'undefined') return createSampleBooks();
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
@@ -110,21 +115,22 @@ function saveBooks(books: Book[]) {
 }
 
 function spineTextColor(bgColor: string): string {
-  const hex = bgColor.replace("#", "");
+  const hex = bgColor.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
-  return r * 0.299 + g * 0.587 + b * 0.114 > 140 ? "#1b2430" : "#ffffff";
+  return r * 0.299 + g * 0.587 + b * 0.114 > 140 ? '#1b2430' : '#ffffff';
 }
 
-function DraggableBook({
-  book,
-  onClick,
-}: {
-  book: Book;
-  onClick: () => void;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+function DraggableBook({ book, onClick }: { book: Book; onClick: () => void }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: book.id,
   });
 
@@ -150,7 +156,12 @@ function DraggableBook({
           className="absolute -top-1.5 left-1/2 -translate-x-1/2 z-10"
           style={{ width: book.width * 0.45, height: 8 }}
         >
-          <svg width="100%" height="100%" viewBox="0 0 20 12" preserveAspectRatio="none">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 20 12"
+            preserveAspectRatio="none"
+          >
             <path
               d="M0 0h20v8l-4 4-6-4-6 4-4-4V0z"
               fill={RIBBON_COLORS[book.id.length % RIBBON_COLORS.length]}
@@ -173,12 +184,12 @@ function DraggableBook({
           <span
             className="text-[10px] font-semibold leading-tight select-none"
             style={{
-              writingMode: "vertical-rl",
-              textOrientation: "mixed",
-              letterSpacing: "0.05em",
+              writingMode: 'vertical-rl',
+              textOrientation: 'mixed',
+              letterSpacing: '0.05em',
               maxHeight: book.height - 20,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
               color: spineTextColor(book.color),
             }}
           >
@@ -202,14 +213,14 @@ export default function BookshelfPanel({
 }) {
   const [books, setBooks] = useState<Book[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [view, setView] = useState<"shelf" | "reading">("shelf");
+  const [view, setView] = useState<'shelf' | 'reading'>('shelf');
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
-  const [newBookInput, setNewBookInput] = useState("");
+  const [newBookInput, setNewBookInput] = useState('');
   const [showNewInput, setShowNewInput] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [pageAnim, setPageAnim] = useState<"none" | "out" | "in">("none");
+  const [pageAnim, setPageAnim] = useState<'none' | 'out' | 'in'>('none');
   const [displayPage, setDisplayPage] = useState(0);
-  const [pendingDir, setPendingDir] = useState<"prev" | "next" | null>(null);
+  const [pendingDir, setPendingDir] = useState<'prev' | 'next' | null>(null);
 
   useEffect(() => {
     const b = loadBooks();
@@ -252,7 +263,7 @@ export default function BookshelfPanel({
     if (!activeBook) return;
 
     // Check if dropped on desk area (the desk zone id)
-    if (overIdStr === "desk-zone") {
+    if (overIdStr === 'desk-zone') {
       setBooks((prev) =>
         prev.map((b) => (b.id === activeIdStr ? { ...b, onShelf: false } : b))
       );
@@ -260,7 +271,7 @@ export default function BookshelfPanel({
     }
 
     // Check if dropped on shelf area
-    if (overIdStr === "shelf-zone") {
+    if (overIdStr === 'shelf-zone') {
       setBooks((prev) =>
         prev.map((b) => (b.id === activeIdStr ? { ...b, onShelf: true } : b))
       );
@@ -295,39 +306,39 @@ export default function BookshelfPanel({
     if (!book) return;
     setActiveBookId(bookId);
     setDisplayPage(book.currentPage);
-    setPageAnim("none");
-    setView("reading");
+    setPageAnim('none');
+    setView('reading');
   }
 
   function closeBook() {
-    setView("shelf");
+    setView('shelf');
     setActiveBookId(null);
-    setPageAnim("none");
+    setPageAnim('none');
   }
 
   const turnPage = useCallback(
-    (dir: "prev" | "next") => {
-      if (!activeBook || pageAnim !== "none") return;
+    (dir: 'prev' | 'next') => {
+      if (!activeBook || pageAnim !== 'none') return;
       const book = books.find((b) => b.id === activeBookId);
       if (!book) return;
       const nextPage =
-        dir === "next"
+        dir === 'next'
           ? Math.min(book.currentPage + 2, book.pages.length - 1)
           : Math.max(book.currentPage - 2, 0);
       if (nextPage === book.currentPage) return;
       setPendingDir(dir);
-      setPageAnim("out");
+      setPageAnim('out');
     },
     [activeBook, activeBookId, books, pageAnim]
   );
 
   function handleAnimEnd() {
-    if (pageAnim === "out" && activeBookId && pendingDir) {
+    if (pageAnim === 'out' && activeBookId && pendingDir) {
       setBooks((prev) =>
         prev.map((b) => {
           if (b.id !== activeBookId) return b;
           const next =
-            pendingDir === "next"
+            pendingDir === 'next'
               ? Math.min(b.currentPage + 2, b.pages.length - 1)
               : Math.max(b.currentPage - 2, 0);
           return { ...b, currentPage: next };
@@ -336,14 +347,14 @@ export default function BookshelfPanel({
       setDisplayPage((prev) => {
         const book = books.find((b) => b.id === activeBookId);
         if (!book) return prev;
-        return pendingDir === "next"
+        return pendingDir === 'next'
           ? Math.min(prev + 2, book.pages.length - 1)
           : Math.max(prev - 2, 0);
       });
       setPendingDir(null);
-      setPageAnim("in");
-    } else if (pageAnim === "in") {
-      setPageAnim("none");
+      setPageAnim('in');
+    } else if (pageAnim === 'in') {
+      setPageAnim('none');
     }
   }
 
@@ -353,7 +364,7 @@ export default function BookshelfPanel({
     const newBook: Book = {
       id: crypto.randomUUID(),
       title: trimmed,
-      pages: ["Start writing…"],
+      pages: ['Start writing…'],
       currentPage: 0,
       color: SPINE_COLORS[books.length % SPINE_COLORS.length],
       height: 140 + Math.floor(Math.random() * 70),
@@ -361,14 +372,14 @@ export default function BookshelfPanel({
       onShelf: true,
     };
     setBooks((prev) => [...prev, newBook]);
-    setNewBookInput("");
+    setNewBookInput('');
     setShowNewInput(false);
   }
 
   function updatePageContent(
     bookId: string,
     pageIndex: number,
-    side: "left" | "right",
+    side: 'left' | 'right',
     text: string
   ) {
     setBooks((prev) =>
@@ -376,7 +387,9 @@ export default function BookshelfPanel({
         if (b.id !== bookId) return b;
         const newPages = [...b.pages];
         const targetIdx =
-          side === "left" ? pageIndex : Math.min(pageIndex + 1, b.pages.length - 1);
+          side === 'left'
+            ? pageIndex
+            : Math.min(pageIndex + 1, b.pages.length - 1);
         newPages[targetIdx] = text;
         return { ...b, pages: newPages };
       })
@@ -390,17 +403,17 @@ export default function BookshelfPanel({
       aria-hidden={!isOpen}
       className={`absolute bottom-0 left-0 z-20 transition-all duration-300 ease-out ${
         isOpen
-          ? "translate-x-0 opacity-100"
-          : "-translate-x-full opacity-0 pointer-events-none"
+          ? 'translate-x-0 opacity-100'
+          : '-translate-x-full opacity-0 pointer-events-none'
       }`}
     >
       <div
         className="rounded-tr-[28px] rounded-br-[28px] bg-surface shadow-lg ring-1 ring-black/5 overflow-hidden"
-        style={{ maxWidth: "90vw", width: view === "reading" ? 600 : 420 }}
+        style={{ maxWidth: '90vw', width: view === 'reading' ? 600 : 420 }}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-black/5 px-5 py-3">
-          {view === "reading" ? (
+          {view === 'reading' ? (
             <button
               type="button"
               onClick={closeBook}
@@ -425,7 +438,7 @@ export default function BookshelfPanel({
         </div>
 
         {/* Shelf view */}
-        {view === "shelf" && (
+        {view === 'shelf' && (
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -473,7 +486,7 @@ export default function BookshelfPanel({
                   style={{
                     minHeight: 220,
                     background:
-                      "linear-gradient(180deg, #f5f4f1 0%, #f5f4f1 60%, #d4a373 60%, #c4956a 64%, #b8885e 100%)",
+                      'linear-gradient(180deg, #f5f4f1 0%, #f5f4f1 60%, #d4a373 60%, #c4956a 64%, #b8885e 100%)',
                   }}
                 >
                   {shelfBooks.map((book) => (
@@ -495,7 +508,7 @@ export default function BookshelfPanel({
                           type="text"
                           value={newBookInput}
                           onChange={(e) => setNewBookInput(e.target.value)}
-                          onKeyDown={(e) => e.key === "Enter" && addBook()}
+                          onKeyDown={(e) => e.key === 'Enter' && addBook()}
                           placeholder="Book name…"
                           autoFocus
                           className="w-full rounded-xl border border-black/10 bg-white px-3 py-1.5 text-xs text-ink outline-none transition-all focus:border-accent focus:ring-2 focus:ring-accent/20"
@@ -512,7 +525,7 @@ export default function BookshelfPanel({
                             type="button"
                             onClick={() => {
                               setShowNewInput(false);
-                              setNewBookInput("");
+                              setNewBookInput('');
                             }}
                             className="btn-base rounded-full px-3 py-1 text-xs text-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                           >
@@ -539,27 +552,28 @@ export default function BookshelfPanel({
         )}
 
         {/* Reading view — two-page spread */}
-        {view === "reading" && activeBook && (
+        {view === 'reading' && activeBook && (
           <div className="px-5 py-5 pb-16 max-h-[70vh] overflow-y-auto">
             <div
               key={displayPage}
               onAnimationEnd={handleAnimEnd}
               className={`${
-                pageAnim === "out"
-                  ? "animate-page-flip-out"
-                  : pageAnim === "in"
-                  ? "animate-page-flip-in"
-                  : ""
+                pageAnim === 'out'
+                  ? 'animate-page-flip-out'
+                  : pageAnim === 'in'
+                    ? 'animate-page-flip-in'
+                    : ''
               }`}
               style={{
-                transformStyle: "preserve-3d",
-                transformOrigin: "left center",
+                transformStyle: 'preserve-3d',
+                transformOrigin: 'left center',
               }}
             >
               {/* Two-page spread */}
-              <div className="relative flex rounded-xl overflow-hidden min-h-[280px] shadow-sm ring-1 ring-black/5"
+              <div
+                className="relative flex rounded-xl overflow-hidden min-h-[280px] shadow-sm ring-1 ring-black/5"
                 style={{
-                  background: "#f5f0e8",
+                  background: '#f5f0e8',
                 }}
               >
                 {/* Left page */}
@@ -570,23 +584,23 @@ export default function BookshelfPanel({
                       transparent, transparent 23px,
                       rgba(0,0,0,0.06) 23px, rgba(0,0,0,0.06) 24px
                     )`,
-                    backgroundPosition: "0 12px",
+                    backgroundPosition: '0 12px',
                   }}
                 >
                   <textarea
-                    value={activeBook.pages[displayPage] || ""}
+                    value={activeBook.pages[displayPage] || ''}
                     onChange={(e) =>
                       updatePageContent(
                         activeBook.id,
                         displayPage,
-                        "left",
+                        'left',
                         e.target.value
                       )
                     }
                     className="w-full h-full min-h-[250px] resize-none bg-transparent text-sm leading-[24px] outline-none"
                     style={{
-                      fontFamily: "var(--font-eb-garamond), Georgia, serif",
-                      color: "#2c1810",
+                      fontFamily: 'var(--font-eb-garamond), Georgia, serif',
+                      color: '#2c1810',
                     }}
                   />
                 </div>
@@ -602,25 +616,27 @@ export default function BookshelfPanel({
                       transparent, transparent 23px,
                       rgba(0,0,0,0.06) 23px, rgba(0,0,0,0.06) 24px
                     )`,
-                    backgroundPosition: "0 12px",
+                    backgroundPosition: '0 12px',
                   }}
                 >
                   <textarea
-                    value={activeBook.pages[displayPage + 1] || ""}
+                    value={activeBook.pages[displayPage + 1] || ''}
                     onChange={(e) =>
                       updatePageContent(
                         activeBook.id,
                         displayPage,
-                        "right",
+                        'right',
                         e.target.value
                       )
                     }
                     className="w-full h-full min-h-[250px] resize-none bg-transparent text-sm leading-[24px] outline-none"
                     style={{
-                      fontFamily: "var(--font-eb-garamond), Georgia, serif",
-                      color: "#2c1810",
+                      fontFamily: 'var(--font-eb-garamond), Georgia, serif',
+                      color: '#2c1810',
                     }}
-                    placeholder={displayPage + 1 >= activeBook.pages.length ? "—" : ""}
+                    placeholder={
+                      displayPage + 1 >= activeBook.pages.length ? '—' : ''
+                    }
                     disabled={displayPage + 1 >= activeBook.pages.length}
                   />
                 </div>
@@ -631,8 +647,8 @@ export default function BookshelfPanel({
             <div className="mt-4 flex items-center justify-between">
               <button
                 type="button"
-                onClick={() => turnPage("prev")}
-                disabled={displayPage === 0 || pageAnim !== "none"}
+                onClick={() => turnPage('prev')}
+                disabled={displayPage === 0 || pageAnim !== 'none'}
                 className="btn-base flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Previous spread"
               >
@@ -641,16 +657,16 @@ export default function BookshelfPanel({
               </button>
 
               <span className="text-xs text-muted font-medium">
-                Spread {Math.floor(displayPage / 2) + 1} of{" "}
+                Spread {Math.floor(displayPage / 2) + 1} of{' '}
                 {Math.ceil(activeBook.pages.length / 2)}
               </span>
 
               <button
                 type="button"
-                onClick={() => turnPage("next")}
+                onClick={() => turnPage('next')}
                 disabled={
                   displayPage >= activeBook.pages.length - 2 ||
-                  pageAnim !== "none"
+                  pageAnim !== 'none'
                 }
                 className="btn-base flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-30 disabled:pointer-events-none"
                 aria-label="Next spread"

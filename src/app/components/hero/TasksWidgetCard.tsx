@@ -1,9 +1,9 @@
-import { CheckSquare, Square } from "lucide-react";
+import { CheckSquare, Square } from 'lucide-react';
 
 const tasks = [
-  { label: "Review PR #142", done: true },
-  { label: "Write release notes", done: true },
-  { label: "Prep for standup", done: false },
+  { label: 'Review PR #142', done: true },
+  { label: 'Write release notes', done: true },
+  { label: 'Prep for standup', done: false },
 ];
 
 export default function TasksWidgetCard() {
@@ -26,9 +26,7 @@ export default function TasksWidgetCard() {
             )}
             <span
               className={`text-xs leading-snug ${
-                task.done
-                  ? "text-muted line-through"
-                  : "text-ink"
+                task.done ? 'text-muted line-through' : 'text-ink'
               }`}
             >
               {task.label}

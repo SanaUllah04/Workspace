@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { LayoutDashboard } from "lucide-react";
+import Link from 'next/link';
+import { LayoutDashboard } from 'lucide-react';
 
 const navLinks = [
-  { label: "Features", href: "#" },
-  { label: "How it works", href: "#" },
-  { label: "Integrations", href: "#" },
-  { label: "Pricing", href: "#" },
+  { label: 'Features', href: '#' },
+  { label: 'How it works', href: '#' },
+  { label: 'Integrations', href: '#' },
+  { label: 'Pricing', href: '#' },
 ];
 
 export default function Navbar() {
@@ -13,7 +13,10 @@ export default function Navbar() {
     <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-6 lg:px-12">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <LayoutDashboard size={26} className="text-accent transition-colors group-hover:text-accent-hover" />
+          <LayoutDashboard
+            size={26}
+            className="text-accent transition-colors group-hover:text-accent-hover"
+          />
           <span className="text-lg font-semibold uppercase tracking-[0.15em] text-ink">
             DAYSPACE
           </span>

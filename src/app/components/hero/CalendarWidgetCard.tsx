@@ -1,12 +1,17 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays } from 'lucide-react';
 
-function getNextEvent(): { title: string; time: string; day: number; month: string } {
+function getNextEvent(): {
+  title: string;
+  time: string;
+  day: number;
+  month: string;
+} {
   const now = new Date();
   return {
     day: now.getDate(),
-    month: now.toLocaleDateString("en-US", { month: "short" }),
-    title: "Sprint Review",
-    time: "3:00 PM – 4:00 PM",
+    month: now.toLocaleDateString('en-US', { month: 'short' }),
+    title: 'Sprint Review',
+    time: '3:00 PM – 4:00 PM',
   };
 }
 

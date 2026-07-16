@@ -1,9 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --font-fraunces: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
-  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-eb-garamond: "EB Garamond", ui-serif, Georgia, "Times New Roman", serif;
+  --font-fraunces: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-inter:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
+    sans-serif;
+  --font-eb-garamond:
+    'EB Garamond', ui-serif, Georgia, 'Times New Roman', serif;
   --color-page-bg: #f5f4f1;
   --color-accent: #3d5a80;
   --color-accent-hover: #2f4666;
@@ -15,8 +18,13 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes fade-slide-up {
@@ -30,47 +38,111 @@
   }
 }
 
-.animate-float { animation: float 4s ease-in-out infinite; }
-.animate-float-delayed-1 { animation: float 4s ease-in-out 0.5s infinite; }
-.animate-float-delayed-2 { animation: float 4s ease-in-out 1s infinite; }
-.animate-float-delayed-3 { animation: float 4s ease-in-out 1.5s infinite; }
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-delayed-1 {
+  animation: float 4s ease-in-out 0.5s infinite;
+}
+.animate-float-delayed-2 {
+  animation: float 4s ease-in-out 1s infinite;
+}
+.animate-float-delayed-3 {
+  animation: float 4s ease-in-out 1.5s infinite;
+}
 
-.animate-fade-slide-up { animation: fade-slide-up 0.6s ease-out both; }
-.animate-fade-slide-up-1 { animation: fade-slide-up 0.6s ease-out 0.1s both; }
-.animate-fade-slide-up-2 { animation: fade-slide-up 0.6s ease-out 0.2s both; }
-.animate-fade-slide-up-3 { animation: fade-slide-up 0.6s ease-out 0.3s both; }
-.animate-fade-slide-up-4 { animation: fade-slide-up 0.6s ease-out 0.4s both; }
-.animate-fade-slide-up-5 { animation: fade-slide-up 0.6s ease-out 0.5s both; }
+.animate-fade-slide-up {
+  animation: fade-slide-up 0.6s ease-out both;
+}
+.animate-fade-slide-up-1 {
+  animation: fade-slide-up 0.6s ease-out 0.1s both;
+}
+.animate-fade-slide-up-2 {
+  animation: fade-slide-up 0.6s ease-out 0.2s both;
+}
+.animate-fade-slide-up-3 {
+  animation: fade-slide-up 0.6s ease-out 0.3s both;
+}
+.animate-fade-slide-up-4 {
+  animation: fade-slide-up 0.6s ease-out 0.4s both;
+}
+.animate-fade-slide-up-5 {
+  animation: fade-slide-up 0.6s ease-out 0.5s both;
+}
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-  20%, 40%, 60%, 80% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 @keyframes welcome-enter {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes welcome-text {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes welcome-exit {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(1.05); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.05);
+  }
 }
 
 @keyframes page-flip-out {
-  from { transform: perspective(800px) rotateY(0deg); opacity: 1; }
-  to { transform: perspective(800px) rotateY(-20deg); opacity: 0; }
+  from {
+    transform: perspective(800px) rotateY(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: perspective(800px) rotateY(-20deg);
+    opacity: 0;
+  }
 }
 
 @keyframes page-flip-in {
-  from { transform: perspective(800px) rotateY(20deg); opacity: 0; }
-  to { transform: perspective(800px) rotateY(0deg); opacity: 1; }
+  from {
+    transform: perspective(800px) rotateY(20deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(800px) rotateY(0deg);
+    opacity: 1;
+  }
 }
 
 .btn-base {
@@ -80,17 +152,37 @@
   scale: 0.95;
 }
 
-.animate-shake { animation: shake 0.4s ease-in-out; }
-.animate-welcome-enter { animation: welcome-enter 0.5s ease-out both; }
-.animate-welcome-text { animation: welcome-text 0.6s ease-out 0.3s both; }
-.animate-welcome-exit { animation: welcome-exit 0.5s ease-in both; }
-.animate-page-flip-out { animation: page-flip-out 0.35s ease-in both; }
-.animate-page-flip-in { animation: page-flip-in 0.35s ease-out 0.35s both; }
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+.animate-welcome-enter {
+  animation: welcome-enter 0.5s ease-out both;
+}
+.animate-welcome-text {
+  animation: welcome-text 0.6s ease-out 0.3s both;
+}
+.animate-welcome-exit {
+  animation: welcome-exit 0.5s ease-in both;
+}
+.animate-page-flip-out {
+  animation: page-flip-out 0.35s ease-in both;
+}
+.animate-page-flip-in {
+  animation: page-flip-in 0.35s ease-out 0.35s both;
+}
 
 body {
   background-color: #f5f4f1;
   color: #1b2430;
-  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:
+    'Inter',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

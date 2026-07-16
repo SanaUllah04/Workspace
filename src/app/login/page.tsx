@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { LayoutDashboard, Mail, Lock, ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { LayoutDashboard, Mail, Lock, ArrowRight } from 'lucide-react';
 
-const DEMO_EMAIL = "demo@dayspace.app";
-const DEMO_PASSWORD = "dayspace123";
+const DEMO_EMAIL = 'demo@dayspace.app';
+const DEMO_PASSWORD = 'dayspace123';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState(DEMO_EMAIL);
   const [password, setPassword] = useState(DEMO_PASSWORD);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [shakeKey, setShakeKey] = useState(0);
-  const [stage, setStage] = useState<"login" | "welcome" | "exit">("login");
+  const [stage, setStage] = useState<'login' | 'welcome' | 'exit'>('login');
 
   useEffect(() => {
     setEmail(DEMO_EMAIL);
@@ -22,19 +22,19 @@ export default function LoginPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError("");
+    setError('');
 
     if (email.trim() !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
-      setError("Invalid email or password. Try the demo credentials.");
+      setError('Invalid email or password. Try the demo credentials.');
       setShakeKey((k) => k + 1);
       return;
     }
 
-    setStage("welcome");
+    setStage('welcome');
     setTimeout(() => {
-      setStage("exit");
+      setStage('exit');
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push('/dashboard');
       }, 500);
     }, 1800);
   }
@@ -45,15 +45,12 @@ export default function LoginPage() {
         {/* Login card */}
         <div
           className={`w-full max-w-sm transition-all duration-500 ${
-            stage !== "login" ? "scale-95 opacity-0" : "scale-100 opacity-100"
+            stage !== 'login' ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
           }`}
         >
           <div className="rounded-[28px] bg-surface px-8 py-10 shadow-sm ring-1 ring-black/5">
             <div className="mb-8 flex flex-col items-center text-center">
-              <LayoutDashboard
-                size={32}
-                className="text-accent"
-              />
+              <LayoutDashboard size={32} className="text-accent" />
               <span className="mt-2 text-lg font-semibold uppercase tracking-[0.15em] text-ink">
                 DAYSPACE
               </span>
@@ -106,10 +103,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div
-                key={shakeKey}
-                className={`${error ? "animate-shake" : ""}`}
-              >
+              <div key={shakeKey} className={`${error ? 'animate-shake' : ''}`}>
                 <button
                   type="submit"
                   className="btn-base group flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
@@ -136,12 +130,12 @@ export default function LoginPage() {
       </div>
 
       {/* Welcome overlay */}
-      {stage !== "login" && (
+      {stage !== 'login' && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center bg-page-bg ${
-            stage === "welcome"
-              ? "animate-welcome-enter"
-              : "animate-welcome-exit"
+            stage === 'welcome'
+              ? 'animate-welcome-enter'
+              : 'animate-welcome-exit'
           }`}
         >
           <p className="animate-welcome-text px-6 text-center font-fraunces text-2xl font-medium text-ink md:text-3xl lg:text-4xl">
