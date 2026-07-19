@@ -19,8 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ChevronLeft, ChevronRight, ArrowLeft, Plus, X } from 'lucide-react';
-
-const STORAGE_KEY = 'dayspace-bookshelf';
+import { supabase } from '@/lib/supabase';
 
 interface Book {
   id: string;
@@ -31,6 +30,7 @@ interface Book {
   height: number;
   width: number;
   onShelf: boolean;
+  position: number;
 }
 
 const SPINE_COLORS = [
@@ -52,67 +52,6 @@ const SPINE_COLORS = [
 ];
 
 const RIBBON_COLORS = ['#ee6c4d', '#e85d3d', '#f08c70', '#3d5a80', '#5a7a9e'];
-
-function createSampleBooks(): Book[] {
-  return [
-    {
-      id: 'b1',
-      title: 'The Art of Focus',
-      pages: [
-        'In a world of endless distractions, the ability to focus deeply has become a superpower.\n\nThis is the premise upon which our entire workspace is built. Not to do more, but to do what matters.\n\nThe quiet mind is not empty — it is fully engaged with the present task.',
-        'Deep work cannot be rushed. It requires rituals, boundaries, and a space that protects attention.\n\nYour digital environment should feel like a calm room with a single desk, not a crowded marketplace.\n\nEvery notification is a tax on your attention. Choose wisely what you allow through.',
-        "The most productive people don't manage time — they manage attention.\n\nTime is fixed. Attention is variable. Protect it fiercely.\n\nBuild systems, not habits. Systems scale. Habits fade under pressure.",
-        'The ability to concentrate without distraction on a cognitively demanding task is a skill that requires training.\n\nLike any skill, it must be practiced deliberately and consistently to improve.',
-      ],
-      currentPage: 0,
-      color: SPINE_COLORS[0],
-      height: 180,
-      width: 28,
-      onShelf: true,
-    },
-    {
-      id: 'b2',
-      title: 'Notes on Notes',
-      pages: [
-        'The simple act of writing something down changes how you think about it.\n\nNotes are not just memory aids. They are thinking tools. When you write, you externalize your thoughts and can examine them from a distance.',
-        'Good note-taking is not about capturing everything. It is about capturing what matters.\n\nAsk yourself: will I care about this tomorrow? Next week? Next year?\n\nIf the answer is no, let it go.',
-      ],
-      currentPage: 0,
-      color: SPINE_COLORS[1],
-      height: 160,
-      width: 24,
-      onShelf: true,
-    },
-    {
-      id: 'b3',
-      title: 'Calendar Zen',
-      pages: [
-        "Your calendar should feel like a garden, not a grid.\n\nBlock time for the important stuff first. Let the urgent fill what's left.\n\nIf everything is urgent, nothing is.",
-        "Time blocking is the single most effective productivity technique.\n\nAssign every hour a job. Protect those hours like appointments with yourself.\n\nBecause that's exactly what they are.",
-      ],
-      currentPage: 0,
-      color: SPINE_COLORS[2],
-      height: 200,
-      width: 24,
-      onShelf: true,
-    },
-  ];
-}
-
-function loadBooks(): Book[] {
-  if (typeof window === 'undefined') return createSampleBooks();
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {}
-  return createSampleBooks();
-}
-
-function saveBooks(books: Book[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
-  } catch {}
-}
 
 function spineTextColor(bgColor: string): string {
   const hex = bgColor.replace('#', '');
@@ -223,14 +162,89 @@ export default function BookshelfPanel({
   const [pendingDir, setPendingDir] = useState<'prev' | 'next' | null>(null);
 
   useEffect(() => {
-    const b = loadBooks();
-    setBooks(b);
-    setLoaded(true);
+    fetchBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (loaded) saveBooks(books);
-  }, [books, loaded]);
+  async function fetchBooks() {
+    const { data } = await supabase
+      .from('books')
+      .select('*')
+      .order('position', { ascending: true });
+    if (data && data.length > 0) {
+      const mapped = data.map((b) => ({
+        ...b,
+        pages: Array.isArray(b.pages) ? b.pages : ['Start writing…'],
+      }));
+      setBooks(mapped);
+    } else {
+      await seedSampleBooks();
+    }
+    setLoaded(true);
+  }
+
+  async function seedSampleBooks() {
+    const samples = [
+      {
+        title: 'The Art of Focus',
+        pages: [
+          'In a world of endless distractions, the ability to focus deeply has become a superpower.\n\nThis is the premise upon which our entire workspace is built. Not to do more, but to do what matters.\n\nThe quiet mind is not empty — it is fully engaged with the present task.',
+          'Deep work cannot be rushed. It requires rituals, boundaries, and a space that protects attention.\n\nYour digital environment should feel like a calm room with a single desk, not a crowded marketplace.\n\nEvery notification is a tax on your attention. Choose wisely what you allow through.',
+          "The most productive people don't manage time — they manage attention.\n\nTime is fixed. Attention is variable. Protect it fiercely.\n\nBuild systems, not habits. Systems scale. Habits fade under pressure.",
+          'The ability to concentrate without distraction on a cognitively demanding task is a skill that requires training.\n\nLike any skill, it must be practiced deliberately and consistently to improve.',
+        ],
+        color: '#3d5a80',
+        height: 180,
+        width: 28,
+      },
+      {
+        title: 'Notes on Notes',
+        pages: [
+          'The simple act of writing something down changes how you think about it.\n\nNotes are not just memory aids. They are thinking tools. When you write, you externalize your thoughts and can examine them from a distance.',
+          'Good note-taking is not about capturing everything. It is about capturing what matters.\n\nAsk yourself: will I care about this tomorrow? Next week? Next year?\n\nIf the answer is no, let it go.',
+        ],
+        color: '#ee6c4d',
+        height: 160,
+        width: 24,
+      },
+      {
+        title: 'Calendar Zen',
+        pages: [
+          "Your calendar should feel like a garden, not a grid.\n\nBlock time for the important stuff first. Let the urgent fill what's left.\n\nIf everything is urgent, nothing is.",
+          "Time blocking is the single most effective productivity technique.\n\nAssign every hour a job. Protect those hours like appointments with yourself.\n\nBecause that's exactly what they are.",
+        ],
+        color: '#1b2430',
+        height: 200,
+        width: 24,
+      },
+    ];
+    const inserted = await Promise.all(
+      samples.map((s, i) =>
+        supabase
+          .from('books')
+          .insert({
+            title: s.title,
+            pages: s.pages,
+            current_page: 0,
+            color: s.color,
+            height: s.height,
+            width: s.width,
+            on_shelf: true,
+            position: i,
+          })
+          .select()
+          .single()
+      )
+    );
+    const books = inserted
+      .map((r) => r.data)
+      .filter(Boolean)
+      .map((b) => ({
+        ...b,
+        pages: Array.isArray(b.pages) ? b.pages : ['Start writing…'],
+      })) as Book[];
+    setBooks(books);
+  }
 
   const shelfBooks = useMemo(() => books.filter((b) => b.onShelf), [books]);
   const deskBooks = useMemo(() => books.filter((b) => !b.onShelf), [books]);
@@ -257,48 +271,58 @@ export default function BookshelfPanel({
     const overIdStr = String(over.id);
     if (activeIdStr === overIdStr) return;
 
-    // Determine target container from the over item or drop zone
     const overBook = books.find((b) => b.id === overIdStr);
     const activeBook = books.find((b) => b.id === activeIdStr);
     if (!activeBook) return;
 
-    // Check if dropped on desk area (the desk zone id)
     if (overIdStr === 'desk-zone') {
       setBooks((prev) =>
         prev.map((b) => (b.id === activeIdStr ? { ...b, onShelf: false } : b))
       );
+      supabase.from('books').update({ on_shelf: false }).eq('id', activeIdStr);
       return;
     }
 
-    // Check if dropped on shelf area
     if (overIdStr === 'shelf-zone') {
       setBooks((prev) =>
         prev.map((b) => (b.id === activeIdStr ? { ...b, onShelf: true } : b))
       );
+      supabase.from('books').update({ on_shelf: true }).eq('id', activeIdStr);
       return;
     }
 
-    // Reorder within same container or between containers
     setBooks((prev) => {
       const activeIdx = prev.findIndex((b) => b.id === activeIdStr);
       const overIdx = prev.findIndex((b) => b.id === overIdStr);
       if (activeIdx === -1 || overIdx === -1) return prev;
 
-      // If moving between shelf and desk, toggle onShelf
       const activeB = prev[activeIdx];
       const overB = prev[overIdx];
       if (activeB.onShelf !== overB.onShelf) {
-        return prev.map((b) =>
+        const updated = prev.map((b) =>
           b.id === activeIdStr ? { ...b, onShelf: overB.onShelf } : b
         );
+        supabase
+          .from('books')
+          .update({ on_shelf: overB.onShelf })
+          .eq('id', activeIdStr);
+        updatePositions(updated);
+        return updated;
       }
 
-      // Reorder within same container
       const newBooks = [...prev];
       const [moved] = newBooks.splice(activeIdx, 1);
       newBooks.splice(overIdx, 0, moved);
+      updatePositions(newBooks);
       return newBooks;
     });
+  }
+
+  async function updatePositions(booksToUpdate: Book[]) {
+    const updates = booksToUpdate.map((b, i) =>
+      supabase.from('books').update({ position: i }).eq('id', b.id)
+    );
+    await Promise.all(updates);
   }
 
   function openBook(bookId: string) {
@@ -351,6 +375,19 @@ export default function BookshelfPanel({
           ? Math.min(prev + 2, book.pages.length - 1)
           : Math.max(prev - 2, 0);
       });
+
+      const book = books.find((b) => b.id === activeBookId);
+      if (book) {
+        const next =
+          pendingDir === 'next'
+            ? Math.min(book.currentPage + 2, book.pages.length - 1)
+            : Math.max(book.currentPage - 2, 0);
+        supabase
+          .from('books')
+          .update({ current_page: next })
+          .eq('id', activeBookId);
+      }
+
       setPendingDir(null);
       setPageAnim('in');
     } else if (pageAnim === 'in') {
@@ -358,7 +395,7 @@ export default function BookshelfPanel({
     }
   }
 
-  function addBook() {
+  async function addBook() {
     const trimmed = newBookInput.trim();
     if (!trimmed) return;
     const newBook: Book = {
@@ -370,10 +407,23 @@ export default function BookshelfPanel({
       height: 140 + Math.floor(Math.random() * 70),
       width: 22 + Math.floor(Math.random() * 14),
       onShelf: true,
+      position: books.length,
     };
     setBooks((prev) => [...prev, newBook]);
     setNewBookInput('');
     setShowNewInput(false);
+
+    await supabase.from('books').insert({
+      id: newBook.id,
+      title: newBook.title,
+      pages: newBook.pages,
+      current_page: 0,
+      color: newBook.color,
+      height: newBook.height,
+      width: newBook.width,
+      on_shelf: true,
+      position: newBook.position,
+    });
   }
 
   function updatePageContent(
@@ -394,6 +444,17 @@ export default function BookshelfPanel({
         return { ...b, pages: newPages };
       })
     );
+
+    const book = books.find((b) => b.id === bookId);
+    if (book) {
+      const newPages = [...book.pages];
+      const targetIdx =
+        side === 'left'
+          ? pageIndex
+          : Math.min(pageIndex + 1, book.pages.length - 1);
+      newPages[targetIdx] = text;
+      supabase.from('books').update({ pages: newPages }).eq('id', bookId);
+    }
   }
 
   if (!loaded) return null;
