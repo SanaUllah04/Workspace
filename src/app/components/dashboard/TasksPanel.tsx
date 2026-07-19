@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckSquare, Square, Trash2, Plus } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface Task {
   id: string;
@@ -15,31 +16,47 @@ interface TasksPanelProps {
 }
 
 export default function TasksPanel({ isOpen, onClose }: TasksPanelProps) {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: '1', label: 'Review PR #142', done: true },
-    { id: '2', label: 'Write release notes', done: true },
-    { id: '3', label: 'Prep for standup', done: false },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [input, setInput] = useState('');
+  const [loaded, setLoaded] = useState(false);
 
-  function addTask() {
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  async function fetchTasks() {
+    const { data } = await supabase
+      .from('tasks')
+      .select('*')
+      .order('position', { ascending: true });
+    if (data) setTasks(data);
+    setLoaded(true);
+  }
+
+  async function addTask() {
     const trimmed = input.trim();
     if (!trimmed) return;
-    setTasks((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), label: trimmed, done: false },
-    ]);
+    const { data, error } = await supabase
+      .from('tasks')
+      .insert({ label: trimmed, done: false, position: tasks.length })
+      .select()
+      .single();
+    if (data) setTasks((prev) => [...prev, data]);
     setInput('');
   }
 
-  function toggleTask(id: string) {
+  async function toggleTask(id: string) {
+    const task = tasks.find((t) => t.id === id);
+    if (!task) return;
     setTasks((prev) =>
       prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
     );
+    await supabase.from('tasks').update({ done: !task.done }).eq('id', id);
   }
 
-  function deleteTask(id: string) {
+  async function deleteTask(id: string) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+    await supabase.from('tasks').delete().eq('id', id);
   }
 
   const doneCount = tasks.filter((t) => t.done).length;

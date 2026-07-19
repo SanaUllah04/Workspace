@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { supabase } from '@/lib/supabase';
 
 interface NotepadPanelProps {
   isOpen: boolean;
@@ -9,6 +10,40 @@ interface NotepadPanelProps {
 
 export default function NotepadPanel({ isOpen, onClose }: NotepadPanelProps) {
   const [content, setContent] = useState('');
+  const [notepadId, setNotepadId] = useState<string | null>(null);
+  const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    fetchNotepad();
+  }, []);
+
+  async function fetchNotepad() {
+    const { data } = await supabase
+      .from('notepads')
+      .select('*')
+      .limit(1)
+      .single();
+    if (data) {
+      setContent(data.content);
+      setNotepadId(data.id);
+    }
+  }
+
+  function handleChange(value: string) {
+    setContent(value);
+    if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    saveTimeout.current = setTimeout(() => {
+      saveNotepad(value);
+    }, 500);
+  }
+
+  async function saveNotepad(value: string) {
+    if (!notepadId) return;
+    await supabase
+      .from('notepads')
+      .update({ content: value, updated_at: new Date().toISOString() })
+      .eq('id', notepadId);
+  }
 
   return (
     <div
@@ -24,7 +59,7 @@ export default function NotepadPanel({ isOpen, onClose }: NotepadPanelProps) {
         </h3>
         <textarea
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
           placeholder="Jot something down…"
           className="min-h-[240px] w-full resize-none rounded-2xl bg-page-bg/60 p-5 text-sm text-ink leading-relaxed outline-none transition-all duration-200 placeholder:text-muted/40 focus:ring-2 focus:ring-accent/20"
         />
