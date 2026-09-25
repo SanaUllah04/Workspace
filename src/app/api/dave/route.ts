@@ -148,10 +148,23 @@ export async function POST(request: Request) {
       }
     );
     if (!response.ok) {
-      return NextResponse.json(
-        { error: 'Dave could not reach Gemini. Please try again.' },
-        { status: 502 }
-      );
+      const providerError = await response.text().catch(() => '');
+      // Keep provider details on the server; never log the API key or send raw
+      // provider responses (which can contain request metadata) to the browser.
+      console.error('Gemini request failed', {
+        status: response.status,
+        statusText: response.statusText,
+        details: providerError.slice(0, 1000),
+      });
+      const error =
+        response.status === 401 || response.status === 403
+          ? 'Gemini rejected the API key. Check GEMINI_API_KEY in your server environment.'
+          : response.status === 404
+            ? 'The configured Gemini model was not found. Check GEMINI_MODEL.'
+            : response.status === 429
+              ? 'Gemini rate or quota limit reached. Check your Google AI Studio billing and usage limits.'
+              : 'Gemini is temporarily unavailable. Check the server logs for the provider error, then try again.';
+      return NextResponse.json({ error }, { status: 502 });
     }
     const answer = textFromInteraction(await response.json());
     if (!answer) {
@@ -164,9 +177,15 @@ export async function POST(request: Request) {
       { answer },
       { headers: { 'Cache-Control': 'no-store' } }
     );
-  } catch {
+  } catch (error) {
+    console.error('Gemini request could not be completed', error);
     return NextResponse.json(
-      { error: 'Dave could not answer right now. Please try again.' },
+      {
+        error:
+          error instanceof Error && error.name === 'TimeoutError'
+            ? 'Gemini took too long to respond. Please try again.'
+            : 'Dave could not connect to Gemini. Check the server network and try again.',
+      },
       { status: 502 }
     );
   }

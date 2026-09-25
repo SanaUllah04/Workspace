@@ -19,9 +19,13 @@ type RecognitionWindow = Window & {
 };
 
 export default function DaveAssistant() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'assistant',
+      text: 'Hi, I’m Dave. I’m ready when you want to ask about your dashboard.',
+    },
+  ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [listening, setListening] = useState(false);
@@ -29,22 +33,11 @@ export default function DaveAssistant() {
   const [error, setError] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<Recognition | null>(null);
-  const greetedRef = useRef(false);
-
   useEffect(() => {
-    if (greetedRef.current) return;
-    greetedRef.current = true;
-    void askDave(
-      'Give me a brief spoken welcome and summarize the latest available dashboard information.',
-      [],
-      true
-    );
     return () => {
       window.speechSynthesis?.cancel();
       recognitionRef.current?.stop();
     };
-    // This is intentionally a single greeting for each dashboard visit.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,14 +64,9 @@ export default function DaveAssistant() {
     }, 700);
   }
 
-  async function askDave(
-    message: string,
-    history: Message[],
-    greeting = false
-  ) {
+  async function askDave(message: string, history: Message[]) {
     setError('');
-    if (!greeting) setSending(true);
-    else setLoading(true);
+    setSending(true);
     try {
       const response = await fetch('/api/dave', {
         method: 'POST',
@@ -94,7 +82,7 @@ export default function DaveAssistant() {
         throw new Error(result.error || 'Dave could not answer right now.');
       const next = [
         ...history,
-        ...(!greeting ? [{ role: 'user' as const, text: message }] : []),
+        { role: 'user' as const, text: message },
         { role: 'assistant' as const, text: result.answer },
       ];
       setMessages(next);
@@ -105,15 +93,7 @@ export default function DaveAssistant() {
           ? cause.message
           : 'Dave could not answer right now.';
       setError(messageText);
-      if (greeting)
-        setMessages([
-          {
-            role: 'assistant',
-            text: 'Hi, I’m Dave. I’m ready when you want to ask about your dashboard.',
-          },
-        ]);
     } finally {
-      setLoading(false);
       setSending(false);
     }
   }
@@ -192,11 +172,6 @@ export default function DaveAssistant() {
           className="max-h-56 space-y-3 overflow-y-auto px-4 py-3"
           aria-live="polite"
         >
-          {loading && (
-            <p className="text-sm text-muted">
-              Dave is getting your dashboard ready…
-            </p>
-          )}
           {messages.map((message, index) => (
             <div
               key={`${message.role}-${index}`}
