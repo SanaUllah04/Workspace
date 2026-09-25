@@ -7,6 +7,7 @@ import CalendarPanel from '@/app/components/dashboard/CalendarPanel';
 import TasksPanel from '@/app/components/dashboard/TasksPanel';
 import NotepadPanel from '@/app/components/dashboard/NotepadPanel';
 import BookshelfPanel from '@/app/components/dashboard/BookshelfPanel';
+import DaveAssistant from '@/app/components/dashboard/DaveAssistant';
 
 type Panel = 'calendar' | 'tasks' | 'notepad' | 'bookshelf' | null;
 
@@ -60,6 +61,8 @@ export default function DashboardPage() {
         >
           {/* Time / Location / Weather — always visible top-right */}
           <TimeLocationWeather />
+
+          <DaveAssistant />
 
           {/* Module toggle buttons */}
           <div className="absolute top-6 right-6 z-30 flex flex-col items-center gap-3 lg:top-10 lg:right-10">
