@@ -7,6 +7,7 @@ import CalendarPanel from '@/app/components/dashboard/CalendarPanel';
 import TasksPanel from '@/app/components/dashboard/TasksPanel';
 import NotepadPanel from '@/app/components/dashboard/NotepadPanel';
 import BookshelfPanel from '@/app/components/dashboard/BookshelfPanel';
+import DaveAssistant from '@/app/components/dashboard/DaveAssistant';
 
 type Panel = 'calendar' | 'tasks' | 'notepad' | 'bookshelf' | null;
 
@@ -49,10 +50,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-6">
-      <div className="mx-auto max-w-[1440px]">
+    <div className="min-h-dvh p-2 sm:p-3 lg:p-4">
+      <div className="min-h-[calc(100dvh-1rem)] w-full sm:min-h-[calc(100dvh-1.5rem)] lg:min-h-[calc(100dvh-2rem)]">
         <div
-          className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-[32px] bg-white shadow-sm ring-1 ring-black/5 md:min-h-[calc(100vh-3rem)] md:rounded-[40px]"
+          className="relative min-h-[calc(100dvh-1rem)] w-full overflow-hidden rounded-[28px] bg-white shadow-sm ring-1 ring-black/5 sm:min-h-[calc(100dvh-1.5rem)] sm:rounded-[32px] lg:min-h-[calc(100dvh-2rem)] lg:rounded-[40px]"
           style={{
             background:
               'radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff',
@@ -60,6 +61,8 @@ export default function DashboardPage() {
         >
           {/* Time / Location / Weather — always visible top-right */}
           <TimeLocationWeather />
+
+          <DaveAssistant />
 
           {/* Module toggle buttons */}
           <div className="absolute top-6 right-6 z-30 flex flex-col items-center gap-3 lg:top-10 lg:right-10">
