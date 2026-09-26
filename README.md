@@ -1,5 +1,6 @@
 # DAYSPACE
 
+![Image](media/Dayspace.png)
 **One quiet place for your whole day.**
 
 A personal productivity workspace that brings notes, tasks, reminders, your calendar, and the moment — clock, weather, and location — together on a single dashboard.
