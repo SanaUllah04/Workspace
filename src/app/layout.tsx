@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter, EB_Garamond } from 'next/font/google';
 import './globals.css';
 
@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   title: 'DAYSPACE — One quiet place for your whole day',
   description:
     'Notes, tasks, reminders, your calendar, and the moment — clock, weather, and location — all living together on a single dashboard.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({

@@ -8,10 +8,10 @@ import CalendarWidgetCard from '@/app/components/hero/CalendarWidgetCard';
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-4 md:p-6">
-      <div className="mx-auto max-w-[1440px]">
+    <div className="min-h-screen">
+      <div className="w-full">
         <div
-          className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-[32px] bg-white shadow-sm ring-1 ring-black/5 md:min-h-[calc(100vh-3rem)] md:rounded-[40px]"
+          className="relative flex min-h-[100svh] flex-col overflow-hidden bg-white"
           style={{
             background:
               'radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.04) 0%, transparent 70%), #ffffff',
@@ -19,26 +19,26 @@ export default function Home() {
         >
           <Navbar />
 
-          <main className="relative z-10 flex min-h-[calc(100vh-2rem)] flex-col items-center justify-center px-4 md:min-h-[calc(100vh-3rem)] md:px-8">
-            <div className="mx-auto flex max-w-2xl flex-col items-center text-center -mt-10">
-              <p className="animate-fade-slide-up text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+          <main className="landing-main relative z-10 flex flex-1 flex-col items-center justify-center px-4 pb-8 pt-28 sm:px-6 md:px-8 md:pt-24">
+            <div className="landing-hero mx-auto flex max-w-2xl flex-col items-center text-center md:-mt-10">
+              <p className="animate-fade-slide-up text-[clamp(0.625rem,0.8vw,0.75rem)] font-semibold uppercase tracking-[0.2em] text-accent">
                 Your day, in one place
               </p>
 
-              <h1 className="animate-fade-slide-up-1 mt-5 font-fraunces text-4xl font-medium leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-6xl">
+              <h1 className="animate-fade-slide-up-1 mt-6 font-fraunces text-[clamp(2rem,5vw,3.75rem)] font-medium leading-[1.05] tracking-tight text-ink">
                 One quiet place for your whole day.
               </h1>
 
-              <p className="animate-fade-slide-up-2 mt-5 max-w-lg text-lg text-muted md:text-xl">
+              <p className="animate-fade-slide-up-2 mt-6 max-w-lg text-[clamp(1rem,1.6vw,1.25rem)] leading-relaxed text-muted">
                 Notes, tasks, reminders, your calendar, and the moment — clock,
                 weather, and location — all living together on a single
                 dashboard.
               </p>
 
-              <div className="animate-fade-slide-up-3 mt-8 flex flex-col items-center gap-4 sm:flex-row">
+              <div className="animate-fade-slide-up-3 mt-6 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
                 <Link
                   href="/login"
-                  className="btn-base group inline-flex items-center gap-2 rounded-full bg-highlight px-7 py-3 text-sm font-semibold text-white hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
+                  className="btn-base group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-highlight px-7 py-3 text-[clamp(0.75rem,1vw,0.875rem)] font-semibold text-white hover:bg-highlight-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2"
                 >
                   Enter Workspace
                   <ArrowRight
@@ -48,17 +48,14 @@ export default function Home() {
                 </Link>
                 <Link
                   href="#"
-                  className="btn-base inline-flex items-center gap-2 rounded-full border border-black/10 px-7 py-3 text-sm font-semibold text-ink hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  className="btn-base inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-black/10 px-7 py-3 text-[clamp(0.75rem,1vw,0.875rem)] font-semibold text-ink hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                   See how it works
                 </Link>
               </div>
             </div>
 
-            <div
-              className="relative mt-16 hidden w-full max-w-2xl md:block"
-              style={{ height: 260 }}
-            >
+            <div className="relative mt-16 hidden h-[clamp(16rem,28vw,34rem)] w-[min(92vw,1100px)] lg:block">
               <div className="animate-fade-slide-up-4 animate-float absolute -top-4 left-[2%] rotate-[-3deg] lg:left-[8%]">
                 <ClockWidgetCard />
               </div>
@@ -73,7 +70,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-12 grid w-full max-w-lg grid-cols-1 gap-4 md:hidden">
+            <div className="landing-widget-grid mt-12 grid w-full grid-cols-2 gap-3 lg:hidden">
               <ClockWidgetCard />
               <NotepadWidgetCard />
               <TasksWidgetCard />
@@ -81,8 +78,8 @@ export default function Home() {
             </div>
           </main>
 
-          <div className="absolute bottom-0 left-0 right-0 z-10 hidden border-t border-black/5 bg-white/60 backdrop-blur-sm md:block">
-            <div className="mx-auto flex max-w-[1440px] items-center justify-center gap-10 px-12 py-4">
+          <div className="landing-badges relative z-10 border-t border-black/5 bg-white/60 backdrop-blur-sm md:absolute md:bottom-0 md:left-0 md:right-0">
+            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 py-4 sm:gap-x-10 md:px-12">
               <div className="flex items-center gap-2 text-xs text-muted">
                 <Shield size={14} className="text-accent" />
                 <span>Private by default</span>
