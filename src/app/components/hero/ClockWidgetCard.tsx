@@ -38,7 +38,7 @@ export default function ClockWidgetCard({
   }, []);
 
   return (
-    <div className="w-56 rounded-2xl bg-white p-4 ring-1 ring-black/5 shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+    <div className="landing-widget-card w-full rounded-2xl bg-white p-4 ring-1 ring-black/5 shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
       <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
         <Clock size={12} />
         <span>Live Clock</span>
