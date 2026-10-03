@@ -1,9 +1,16 @@
 'use client';
 
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, PointerEvent, useEffect, useRef, useState } from 'react';
 import { Bot, Mic, MicOff, Send, Volume2, VolumeX } from 'lucide-react';
 
 type Message = { role: 'user' | 'assistant'; text: string };
+type WidgetLayout = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+const LAYOUT_KEY = 'dayspace-dave-layout';
 type RecognitionResult = { 0: { transcript: string } };
 type RecognitionEvent = { results: ArrayLike<RecognitionResult> };
 type Recognition = {
@@ -19,6 +26,14 @@ type RecognitionWindow = Window & {
 };
 
 export default function DaveAssistant() {
+  const [layout, setLayout] = useState<WidgetLayout | null>(null);
+  const widgetRef = useRef<HTMLElement>(null);
+  const draggingRef = useRef<{
+    x: number;
+    y: number;
+    left: number;
+    top: number;
+  } | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -33,6 +48,116 @@ export default function DaveAssistant() {
   const [error, setError] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<Recognition | null>(null);
+
+  useEffect(() => {
+    const parent = widgetRef.current?.parentElement;
+    if (!parent) return;
+    const bounds = parent.getBoundingClientRect();
+    const defaultLayout: WidgetLayout = {
+      left: Math.max(0, (bounds.width - 360) / 2),
+      top: Math.max(0, bounds.height - 430 - 80),
+      width: Math.min(360, bounds.width - 24),
+      height: Math.min(430, bounds.height - 24),
+    };
+    try {
+      const saved = localStorage.getItem(LAYOUT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as WidgetLayout;
+        if (
+          [parsed.left, parsed.top, parsed.width, parsed.height].every(
+            Number.isFinite
+          )
+        ) {
+          defaultLayout.left = Math.min(
+            Math.max(0, parsed.left),
+            Math.max(0, bounds.width - 80)
+          );
+          defaultLayout.top = Math.min(
+            Math.max(0, parsed.top),
+            Math.max(0, bounds.height - 100)
+          );
+          defaultLayout.width = Math.min(
+            Math.max(
+              Math.min(300, bounds.width - defaultLayout.left),
+              parsed.width
+            ),
+            bounds.width - defaultLayout.left
+          );
+          defaultLayout.height = Math.min(
+            Math.max(
+              Math.min(300, bounds.height - defaultLayout.top),
+              parsed.height
+            ),
+            bounds.height - defaultLayout.top
+          );
+        }
+      }
+    } catch {
+      /* Ignore invalid saved layout. */
+    }
+    setLayout(defaultLayout);
+  }, []);
+
+  useEffect(() => {
+    if (layout) localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout));
+  }, [layout]);
+
+  function beginDrag(event: PointerEvent<HTMLDivElement>) {
+    if ((event.target as HTMLElement).closest('button')) return;
+    const current = layout;
+    if (!current) return;
+    event.preventDefault();
+    draggingRef.current = {
+      x: event.clientX,
+      y: event.clientY,
+      left: current.left,
+      top: current.top,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function moveDrag(event: PointerEvent<HTMLDivElement>) {
+    const drag = draggingRef.current;
+    const parent = widgetRef.current?.parentElement;
+    if (!drag || !parent) return;
+    const bounds = parent.getBoundingClientRect();
+    setLayout((current) =>
+      current
+        ? {
+            ...current,
+            left: Math.max(
+              0,
+              Math.min(
+                bounds.width - current.width,
+                drag.left + event.clientX - drag.x
+              )
+            ),
+            top: Math.max(
+              0,
+              Math.min(
+                bounds.height - current.height,
+                drag.top + event.clientY - drag.y
+              )
+            ),
+          }
+        : current
+    );
+  }
+
+  useEffect(() => {
+    const element = widgetRef.current;
+    if (!element || !layout) return;
+    const observer = new ResizeObserver(() => {
+      const { width, height } = element.getBoundingClientRect();
+      setLayout((current) =>
+        current && (current.width !== width || current.height !== height)
+          ? { ...current, width, height }
+          : current
+      );
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [layout !== null]);
   useEffect(() => {
     return () => {
       window.speechSynthesis?.cancel();
@@ -134,11 +259,38 @@ export default function DaveAssistant() {
 
   return (
     <section
+      ref={widgetRef}
       aria-label="Dave assistant"
-      className="absolute bottom-20 left-1/2 z-30 w-[min(92vw,360px)] -translate-x-1/2 sm:bottom-24"
+      className="absolute z-30 min-h-0 min-w-0"
+      style={
+        layout
+          ? {
+              left: layout.left,
+              top: layout.top,
+              width: layout.width,
+              height: layout.height,
+              minWidth: Math.min(280, layout.width),
+              minHeight: Math.min(260, layout.height),
+              maxWidth: `calc(100% - ${layout.left}px)`,
+              maxHeight: `calc(100% - ${layout.top}px)`,
+              resize: 'both',
+              overflow: 'hidden',
+            }
+          : { visibility: 'hidden' }
+      }
     >
-      <div className="overflow-hidden rounded-[26px] border border-accent/15 bg-white/95 shadow-xl shadow-slate-900/10 backdrop-blur-md">
-        <div className="flex items-center gap-3 border-b border-black/5 px-4 py-3">
+      <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[26px] border border-accent/15 bg-white/95 shadow-xl shadow-slate-900/10 backdrop-blur-md">
+        <div
+          className="flex shrink-0 cursor-move touch-none items-center gap-3 border-b border-black/5 px-4 py-3"
+          onPointerDown={beginDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={() => {
+            draggingRef.current = null;
+          }}
+          onPointerCancel={() => {
+            draggingRef.current = null;
+          }}
+        >
           <div
             className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-white shadow-sm"
             aria-hidden="true"
@@ -169,7 +321,7 @@ export default function DaveAssistant() {
         </div>
 
         <div
-          className="max-h-56 space-y-3 overflow-y-auto px-4 py-3"
+          className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3"
           aria-live="polite"
         >
           {messages.map((message, index) => (
