@@ -187,6 +187,67 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dave-widget {
+  --dave-scale: 1;
+  --dave-radius: 26px;
+}
+
+.dave-widget__panel {
+  border-radius: var(--dave-radius);
+}
+
+.dave-widget__header {
+  gap: calc(0.75rem * var(--dave-scale));
+  padding: calc(0.75rem * var(--dave-scale)) calc(1rem * var(--dave-scale));
+}
+
+.dave-widget__avatar {
+  width: calc(2.75rem * var(--dave-scale));
+  height: calc(2.75rem * var(--dave-scale));
+  border-radius: calc(1rem * var(--dave-scale));
+}
+
+.dave-widget__title {
+  font-size: calc(1.125rem * var(--dave-scale));
+}
+
+.dave-widget__subtitle {
+  font-size: calc(0.6875rem * var(--dave-scale));
+}
+
+.dave-widget__messages {
+  gap: calc(0.75rem * var(--dave-scale));
+  padding: calc(0.75rem * var(--dave-scale)) calc(1rem * var(--dave-scale));
+}
+
+.dave-widget__message {
+  padding: calc(0.625rem * var(--dave-scale)) calc(0.875rem * var(--dave-scale));
+  font-size: calc(0.875rem * var(--dave-scale));
+}
+
+.dave-widget__status,
+.dave-widget__notice {
+  font-size: calc(0.75rem * var(--dave-scale));
+}
+
+.dave-widget__notice {
+  padding: 0 calc(1rem * var(--dave-scale)) calc(0.5rem * var(--dave-scale));
+}
+
+.dave-widget__form {
+  gap: calc(0.5rem * var(--dave-scale));
+  padding: calc(0.75rem * var(--dave-scale));
+}
+
+.dave-widget__input {
+  padding: calc(0.625rem * var(--dave-scale)) calc(1rem * var(--dave-scale));
+  font-size: calc(0.875rem * var(--dave-scale));
+}
+
+.dave-widget__action {
+  padding: calc(0.625rem * var(--dave-scale));
+}
+
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;

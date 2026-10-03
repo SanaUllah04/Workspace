@@ -1,6 +1,13 @@
 'use client';
 
-import { FormEvent, PointerEvent, useEffect, useRef, useState } from 'react';
+import {
+  CSSProperties,
+  FormEvent,
+  PointerEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Bot, Mic, MicOff, Send, Volume2, VolumeX } from 'lucide-react';
 
 type Message = { role: 'user' | 'assistant'; text: string };
@@ -257,31 +264,40 @@ export default function DaveAssistant() {
     recognition.start();
   }
 
+  const daveScale = layout
+    ? Math.max(
+        0.8,
+        Math.min(1.4, Math.sqrt((layout.width / 360) * (layout.height / 430)))
+      )
+    : 1;
+  const daveRadius = Math.round(26 * daveScale);
+  const widgetStyle = layout
+    ? ({
+        left: layout.left,
+        top: layout.top,
+        width: layout.width,
+        height: layout.height,
+        minWidth: Math.min(280, layout.width),
+        minHeight: Math.min(260, layout.height),
+        maxWidth: `calc(100% - ${layout.left}px)`,
+        maxHeight: `calc(100% - ${layout.top}px)`,
+        resize: 'both',
+        overflow: 'hidden',
+        '--dave-scale': daveScale,
+        '--dave-radius': `${daveRadius}px`,
+      } as CSSProperties)
+    : { visibility: 'hidden' as const };
+
   return (
     <section
       ref={widgetRef}
       aria-label="Dave assistant"
-      className="absolute z-30 min-h-0 min-w-0"
-      style={
-        layout
-          ? {
-              left: layout.left,
-              top: layout.top,
-              width: layout.width,
-              height: layout.height,
-              minWidth: Math.min(280, layout.width),
-              minHeight: Math.min(260, layout.height),
-              maxWidth: `calc(100% - ${layout.left}px)`,
-              maxHeight: `calc(100% - ${layout.top}px)`,
-              resize: 'both',
-              overflow: 'hidden',
-            }
-          : { visibility: 'hidden' }
-      }
+      className="dave-widget absolute z-30 min-h-0 min-w-0"
+      style={widgetStyle}
     >
-      <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[26px] border border-accent/15 bg-white/95 shadow-xl shadow-slate-900/10 backdrop-blur-md">
+      <div className="dave-widget__panel flex h-full min-h-0 flex-col overflow-hidden border border-accent/15 bg-white/95 shadow-xl shadow-slate-900/10 backdrop-blur-md">
         <div
-          className="flex shrink-0 cursor-move touch-none items-center gap-3 border-b border-black/5 px-4 py-3"
+          className="dave-widget__header flex shrink-0 cursor-move touch-none items-center gap-3 border-b border-black/5"
           onPointerDown={beginDrag}
           onPointerMove={moveDrag}
           onPointerUp={() => {
@@ -292,17 +308,19 @@ export default function DaveAssistant() {
           }}
         >
           <div
-            className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-white shadow-sm"
+            className="dave-widget__avatar relative flex items-center justify-center rounded-2xl bg-accent text-white shadow-sm"
             aria-hidden="true"
           >
             <Bot size={25} strokeWidth={1.8} />
             <span className="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-400" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="font-fraunces text-lg font-semibold text-ink">
+            <h2 className="dave-widget__title font-fraunces font-semibold text-ink">
               Dave
             </h2>
-            <p className="text-[11px] text-muted">Your dashboard robot</p>
+            <p className="dave-widget__subtitle text-muted">
+              Your dashboard robot
+            </p>
           </div>
           <button
             type="button"
@@ -321,7 +339,7 @@ export default function DaveAssistant() {
         </div>
 
         <div
-          className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3"
+          className="dave-widget__messages flex min-h-0 flex-1 flex-col overflow-y-auto"
           aria-live="polite"
         >
           {messages.map((message, index) => (
@@ -330,25 +348,27 @@ export default function DaveAssistant() {
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <p
-                className={`max-w-[90%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${message.role === 'user' ? 'rounded-br-md bg-accent text-white' : 'rounded-bl-md bg-page-bg text-ink'}`}
+                className={`dave-widget__message max-w-[90%] whitespace-pre-wrap rounded-2xl leading-relaxed ${message.role === 'user' ? 'rounded-br-md bg-accent text-white' : 'rounded-bl-md bg-page-bg text-ink'}`}
               >
                 {message.text}
               </p>
             </div>
           ))}
-          {sending && <p className="text-xs text-muted">Dave is thinking…</p>}
+          {sending && (
+            <p className="dave-widget__status text-muted">Dave is thinking…</p>
+          )}
           <div ref={bottomRef} />
         </div>
 
         {(error || speechBlocked) && (
-          <p className="px-4 pb-2 text-xs text-muted" role="status">
+          <p className="dave-widget__notice text-muted" role="status">
             {error ||
               'Your browser blocked automatic speech. Tap the speaker to hear Dave.'}
           </p>
         )}
         <form
           onSubmit={submit}
-          className="flex items-center gap-2 border-t border-black/5 p-3"
+          className="dave-widget__form flex items-center border-t border-black/5"
         >
           <input
             value={input}
@@ -356,12 +376,12 @@ export default function DaveAssistant() {
             placeholder={listening ? 'Listening…' : 'Ask Dave about your day…'}
             aria-label="Ask Dave a question"
             maxLength={2000}
-            className="min-w-0 flex-1 rounded-full bg-page-bg px-4 py-2.5 text-sm text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-accent/30"
+            className="dave-widget__input min-w-0 flex-1 rounded-full bg-page-bg text-ink outline-none placeholder:text-muted/70 focus:ring-2 focus:ring-accent/30"
           />
           <button
             type="button"
             onClick={toggleMicrophone}
-            className={`rounded-full p-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${listening ? 'bg-highlight text-white' : 'text-muted hover:bg-black/5 hover:text-accent'}`}
+            className={`dave-widget__action rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${listening ? 'bg-highlight text-white' : 'text-muted hover:bg-black/5 hover:text-accent'}`}
             aria-label={listening ? 'Stop voice input' : 'Speak to Dave'}
           >
             {listening ? <MicOff size={17} /> : <Mic size={17} />}
@@ -369,7 +389,7 @@ export default function DaveAssistant() {
           <button
             type="submit"
             disabled={!input.trim() || sending}
-            className="rounded-full bg-accent p-2.5 text-white hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="dave-widget__action rounded-full bg-accent text-white hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Send message to Dave"
           >
             <Send size={16} />
